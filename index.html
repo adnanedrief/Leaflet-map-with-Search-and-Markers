@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>LEAFLET MAP TEST</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+
+    #map-title {
+      position: relative;
+      margin-top: 10px;
+      margin-left: 50px;
+      float: left;
+      background: white;
+      border: 2px solid rgba(0, 0, 0, 0.2);
+      padding: 6px 8px;
+      font-family: Helvetica;
+      font-weight: bold;
+      font-size: 24px;
+      z-index: 800;
+    }
+  </style>
+</head>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js"></script>
+<script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
+
+<body>
+  <div id="map-title">Ma carte</div>
+  <div id="map"></div>
+  <script>
+    var map = L.map('map', {
+      center: [33.98431409557283, -6.867546799166454],
+      zoom: 15,
+      scrollWheelZoom: true
+    });
+    L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: ''
+      }).addTo(map);
+    L.marker([33.98431409557283, -6.867546799166454]).addTo(map)
+      .bindPopup("<img src='https://pbs.twimg.com/media/FdFcLSIWAAAY6Xo.jpg' width='100%'/>" +
+        "<table class='table' style='border-spacing: 10px;'> <thead> <tr> <th>Propriété</th> <th>Ville</th> <th>Infos</th> </tr> </thead> <tbody> <tr> <td scope='row'>ENSIAS</td> <td>RABAT</td> <td> INFORMATIQUE</td> </tr> </tbody> </table>"
+      );
+    /******************************** Store Cords*****************************/
+    var testCords = [{
+      la: '33.984249813050646',
+      lg: '-6.876239776611329'
+    }, {
+      la: '33.980867273286606 ',
+      lg: '-6.874737739562989'
+    }, {
+      la: '33.98246954574348 ',
+      lg: '-6.856284141540528'
+    }, ];
+    var j = 0;
+    testCords.forEach(element => {
+      L.marker([element.la, element.lg]).addTo(map)
+        .bindPopup("Namespace : " + (j++));
+    });
+    /******************************** Store Cords*****************************/
+    /**********************************************************************************/
+    map.on('click', function (e) {
+      var i = 0;
+      var coord = e.latlng;
+      var lat = coord.lat;
+      var lng = coord.lng;
+      var myMarker = L.marker(L.latLng(lat, lng), {
+          title: 'unselected'
+        })
+        .addTo(map).bindPopup("name " + (i + 1));
+      alert("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+      console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+    });
+    /**********************************************************************************/
+   //Search bar
+    var searchControl = new L.esri.Controls.Geosearch().addTo(map);
+    var results = new L.LayerGroup().addTo(map);
+    /**********************************************************************************/
+  </script>
+</body>
+
+</html>
